@@ -110,48 +110,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }*/
 
-/*
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Google Maps Test',
-      home: SimpleMap(),
-    );
-  }
-}
-
-class SimpleMap extends StatefulWidget {
-  const SimpleMap({Key? key}) : super(key: key);
-  @override
-  _SimpleMapState createState() => _SimpleMapState();
-}
-
-class _SimpleMapState extends State<SimpleMap> {
-  static const LatLng _kMapCenter = LatLng(33.9737, -117.3281);
-
-  static const CameraPosition _kInitialPosition = CameraPosition(target: _kMapCenter, zoom: 15.5, tilt: 0, bearing: 0);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Google Maps Test'),
-    ),
-      body: const GoogleMap(
-        initialCameraPosition: _kInitialPosition,
-      ),
-    );
-  }
-}*/
-
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -187,15 +147,11 @@ class MapSampleState extends State<MapSample> {
     zoom: 15,
   );
 
-  static const CameraPosition _kDestination = CameraPosition(
-      target: LatLng(33.973337, -117.328162),
-      zoom: 20);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
-        mapType: MapType.hybrid,
+        mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -211,6 +167,14 @@ class MapSampleState extends State<MapSample> {
 
   Future<void> _goToDestination() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kDestination));
+    Random random = Random();
+    int randomNumber = random.nextInt(3);
+    var latitude = latArray[randomNumber]; var longitude = longArray[randomNumber];
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude, longitude), zoom: 18.5)));
   }
 }
+
+var latArray = [33.974221, 33.976037, 33.974729];
+var longArray = [-117.328810, -117.338161, -117.347125];
+
+
