@@ -1,9 +1,7 @@
 /*
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 void main() => runApp(MyApp());
-
 class _HomeScreenState extends State<HomeScreen> {
   Widget customSearchBar = const Text('Restaurant Selector');
   Widget searchDescription = const Text('Enter your address and select a search radius');
@@ -24,17 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: buttonName,
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SearchPage())),
             )
-
             ),
           ],
       ),
       );
   }
 }
-
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super( key : key );
-
   @override
   Widget build(BuildContext context)
   {
@@ -62,16 +57,12 @@ class SearchPage extends StatelessWidget {
     );
   }
 }
-
 class GoogleMaps extends State<StatefulWidget> {
   late GoogleMapController mapController;
-
   final LatLng _center = const LatLng(45.521563, -122.677433);
-
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -91,7 +82,6 @@ class GoogleMaps extends State<StatefulWidget> {
     );
   }
 }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -102,7 +92,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
@@ -119,6 +108,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
+
+
 void main() => runApp(const MyApp());
 
 List<String> locations = ["Panda Express", "Kimchichanga", "Rising Savor", "Wingstop", "Boba Tea House"];
@@ -134,7 +126,8 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'UCR Restaurant Picker',
       debugShowCheckedModeBanner: false,
-      home: MapSample(),
+      //home: MapSample(),
+      home: test(),
     );
   }
 }
@@ -160,25 +153,25 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-    title: const Text('Food places by UCR'),
-    backgroundColor: Colors.blue,
-    ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        markers: _markers.values.toSet(),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToDestination,
-        label: destination,
-        icon: const Icon(Icons.directions_car),
-      ),
-    ));
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Food places by UCR'),
+            backgroundColor: Colors.blue,
+          ),
+          body: GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            markers: _markers.values.toSet(),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: _goToDestination,
+            label: destination,
+            icon: const Icon(Icons.directions_car),
+          ),
+        ));
   }
 
   String Address = 'Placeholder';
@@ -210,4 +203,25 @@ class MapSampleState extends State<MapSample> {
   }
 }
 
+class test extends StatelessWidget {
+  const test({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(width: 445, height: 1500,
+        child: Stack(children: <Widget>[Positioned(top: 0, left: 0, child: Container(width: 500, height: 1080, decoration: const BoxDecoration(color : Color.fromRGBO(212, 134, 134, 1)))),
+          Positioned(top: 211, left: 53, child: SvgPicture.asset('assets/images/ellipse2.svg', semanticsLabel: 'ellipse2')),
+          Positioned(top: 287, left: 277, child: SvgPicture.asset('assets/images/ellipse5.svg', semanticsLabel: 'ellipse5')),
+          Positioned(top: 287, left: 0, child: SvgPicture.asset('assets/images/ellipse4.svg', semanticsLabel: 'ellipse4')),
+          Positioned(top: 211, left: 277, child: SvgPicture.asset('assets/images/ellipse3.svg', semanticsLabel: 'ellipse3')),
+          Positioned(top: 359, left: 111, child: SvgPicture.asset('assets/images/ellipse1.svg', semanticsLabel: 'ellipse1')),
+          Positioned(top: 174, left: 169, child: SvgPicture.asset('assets/images/ellipse6.svg', semanticsLabel: 'ellipse6')),
+          //Positioned(top: 252, left: 178, child: Container(width: 90, height: 97, decoration: const BoxDecoration(image : DecorationImage(image: AssetImage('assets/images/asset1.png'), fit: BoxFit.fitWidth)))),
+          const Positioned(top: 440,left: 111,child: Text('test text', textAlign: TextAlign.left, style: TextStyle(color: Color.fromRGBO(174, 70, 70, 1),fontFamily: 'Risque',fontSize: 60,letterSpacing: 0))),
+          //fontWeight: FontWeight.normal, height: 1))),
+]
+)
+);
+  }
+}
 

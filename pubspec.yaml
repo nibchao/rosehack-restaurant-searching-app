@@ -40,6 +40,7 @@ dependencies:
   google_maps_webservice: ^0.0.19
   geocoding: ^2.0.2
   geolocator: ^8.0.3
+  flutter_svg: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+  - assets/images/ellipse1.svg
+  - assets/images/ellipse2.svg
+  - assets/images/ellipse3.svg
+  - assets/images/ellipse4.svg
+  - assets/images/ellipse5.svg
+  - assets/images/ellipse6.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
