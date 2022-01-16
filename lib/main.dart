@@ -116,7 +116,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+
 void main() => runApp(const MyApp());
+
+List<String> locations = ["Panda Express", "Kimchichanga", "Rising Savor", "Wingstop", "Boba Tea House"];
+int size = locations.length;
+var latArray = [33.974221, 33.976037, 33.974729, 33.973720, 33.9830878];
+var longArray = [-117.328810, -117.338161, -117.347125, -117.349570, -117.3285733];
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -140,41 +148,66 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
+  final Map<String, Marker> _markers = {};
   Widget destination = const Text('Random Destination');
+  static const UCR = LatLng(33.9737, -117.3281);
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(33.9737, -117.3281),
+    target: UCR,
     zoom: 15,
   );
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+    title: const Text('Food places by UCR'),
+    backgroundColor: Colors.blue,
+    ),
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        markers: _markers.values.toSet(),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToDestination,
         label: destination,
         icon: const Icon(Icons.directions_car),
       ),
-    );
+    ));
   }
+
+  String Address = 'Placeholder';
 
   Future<void> _goToDestination() async {
     final GoogleMapController controller = await _controller.future;
     Random random = Random();
-    int randomNumber = random.nextInt(3);
+    int randomNumber = random.nextInt(size);
     var latitude = latArray[randomNumber]; var longitude = longArray[randomNumber];
+    Future<void> GetAddressFromLatLong(Position position) async {
+      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      Placemark place = placemarks[0];
+      Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+
+      _markers.clear();
+      for (int cnt = 0; cnt < size; cnt++)
+      {
+        final marker = Marker(markerId: MarkerId(locations[cnt]),
+          position: LatLng(position.latitude, position.longitude),
+          infoWindow: InfoWindow(
+            title: locations[cnt],
+            snippet: Address,
+          ),
+        );
+        _markers[locations[cnt]] = marker;
+      }
+    }
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude, longitude), zoom: 18.5)));
   }
 }
-
-var latArray = [33.974221, 33.976037, 33.974729];
-var longArray = [-117.328810, -117.338161, -117.347125];
 
 
